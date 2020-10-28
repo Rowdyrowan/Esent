@@ -1,0 +1,9 @@
+#Imports list of machines from a csv
+import-Csv C:\temp\machines.csv  |
+#Loops through each object in the machines.csv and searching for ESENT and formats them into a table
+ForEach-Object  {
+$GetCount = (Get-WinEvent -computername $_.computername -LogName application | Where-Object { $_.ProviderName -eq "ESENT" }) 
+Get-WinEvent -ComputerName $_.computername -log application -MaxEvents 1 | where-object {$_.providername -eq 'ESENT'}| Select-Object -Property machinename, timecreated ,id
+ }
+ #Sends output in a csv file
+Export-CSV -Path C:\temp\output.csv -NoTypeInformation
